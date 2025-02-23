@@ -19,7 +19,7 @@ public class TwoThreads {
 
     static class Concurrency extends Thread { // this class is a thread in Java, elements in run method will be run on separate Thread
 
-        private int loopNum;
+        private final int loopNum;
         public Logger logger = LoggerFactory.getLogger(HelloWorld.class);
 
 

@@ -28,8 +28,8 @@ public class TwoThreadsLogs {
 
     static class Concurrency extends Thread { // this class is a thread in Java, elements in run method will be run on separate Thread
 
-        private int loopNum;
-        private Logger log;
+        private final int loopNum;
+        private final Logger log;
 
         Concurrency(int loopNum, Logger log) {
             this.log = log;

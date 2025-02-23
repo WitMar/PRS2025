@@ -21,7 +21,7 @@ public class SeparateThread {
 
         public Logger logger = LoggerFactory.getLogger(HelloWorld.class);
 
-        private int loopNum;
+        private final int loopNum;
 
         Concurrency(int loopNum) {
             this.loopNum = loopNum;
