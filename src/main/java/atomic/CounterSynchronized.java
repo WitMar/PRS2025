@@ -1,4 +1,4 @@
-package semaphores;
+package atomic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class CounterSynchronized {
 
-    static Logger logger = LoggerFactory.getLogger(CounterSemaphores.class);
+    static Logger logger = LoggerFactory.getLogger(CounterSynchronized.class);
     static AtomicInteger number = new AtomicInteger(0);
     static Semaphore semaphore = new Semaphore(3);
 
