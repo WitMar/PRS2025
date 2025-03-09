@@ -1,10 +1,11 @@
 package join;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Join {
 
-    public static Logger log = Logger.getLogger(Join.class);
+    public static Logger log = LoggerFactory.getLogger(Join.class);
 
     public static void main(String[] args) throws InterruptedException {
         Thread thread = new Thread(() -> {
@@ -23,7 +24,7 @@ public class Join {
             for (int i = 0; i < 5; ++i) {
                 log.info(Thread.currentThread().getName() + " " + i);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1010);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -35,7 +36,7 @@ public class Join {
             for (int i = 0; i < 5; ++i) {
                 log.info(Thread.currentThread().getName() + " " + i);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -44,11 +45,10 @@ public class Join {
         });
 
         thread.start();
-
-        thread.join();
-
         thread2.start();
         thread3.start();
+
+        thread.join();
 
         log.info("Main ended:" + Thread.currentThread().getName());
     }

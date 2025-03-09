@@ -1,15 +1,17 @@
 package semaphores;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import synchronization.Counter;
 
 import java.util.concurrent.Semaphore;
 import java.util.stream.IntStream;
 
 public class CounterSemaphores {
 
-    static Logger logger = Logger.getLogger(CounterSemaphores.class);
+    static Logger logger = LoggerFactory.getLogger(CounterSemaphores.class);
     static Integer number = 0;
-    static Semaphore semaphore = new Semaphore(1);
+    static Semaphore semaphore = new Semaphore(3);
 
     public static void main(String[] args) throws InterruptedException {
 

@@ -1,6 +1,8 @@
 package locks;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import synchronization.Counter;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -8,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class WaitNotifyLocks<condition> {
 
-    Logger logger = Logger.getLogger(WaitNotifyLocks.class);
+    Logger log = LoggerFactory.getLogger(WaitNotifyLocks.class);
     static ReentrantLock lock = new ReentrantLock();
     static Condition condition = lock.newCondition();
 
@@ -43,7 +45,7 @@ public class WaitNotifyLocks<condition> {
 
 class ProducerConsumer {
 
-    Logger logger = Logger.getLogger(WaitNotifyLocks.class);
+    Logger logger = LoggerFactory.getLogger(WaitNotifyLocks.class);
 
     Lock lock;
     Condition condition;
@@ -54,21 +56,21 @@ class ProducerConsumer {
     }
 
     public void produce() throws InterruptedException {
-        synchronized (this) {
-            logger.info("Start produce");
-            notify();
-            Thread.sleep(1000L);
-            logger.info("Finish produce");
-        }
+        lock.lock();
+        logger.info("Start produce");
+        condition.signal();
+        Thread.sleep(1000L);
+        logger.info("Finish produce");
+        lock.unlock();
     }
 
 
     public void consume() throws InterruptedException {
-        synchronized (this) {
-            logger.info("Start consume");
-            wait();
-            logger.info("Finish consume");
-        }
+        lock.lock();
+        logger.info("Start consume");
+        condition.await();
+        logger.info("Finish consume");
+        lock.unlock();
     }
 
 }

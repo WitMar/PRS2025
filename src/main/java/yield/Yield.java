@@ -1,10 +1,11 @@
 package yield;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Yield {
 
-    public static Logger log = Logger.getLogger(Yield.class);
+    private static final Logger log = LoggerFactory.getLogger(Yield.class);
 
     public static void main(String[] args) {
         Thread thread = new Thread(() ->

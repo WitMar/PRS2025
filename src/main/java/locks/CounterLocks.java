@@ -1,13 +1,16 @@
 package locks;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import synchronization.Counter;
 
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 public class CounterLocks {
 
-    static Logger logger = Logger.getLogger(CounterLocks.class);
+    static Logger logger = LoggerFactory.getLogger(Counter.class);
     static Integer number = 0;
     static ReentrantLock lock = new ReentrantLock();
 
@@ -49,15 +52,22 @@ class CounterThreadLocks {
     }
 
     public void increment() {
+        lock.lock();
         number++;
+        lock.unlock();
     }
 
 
     public void decrement() {
+        lock.lock();
         number--;
+        lock.unlock();
     }
 
     public Integer getNumber() {
-        return number;
+        lock.lock();
+        Integer num = number;
+        lock.unlock();
+        return num;
     }
 }

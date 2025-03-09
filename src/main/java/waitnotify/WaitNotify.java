@@ -1,10 +1,11 @@
 package waitnotify;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WaitNotify {
 
-    Logger logger = Logger.getLogger(WaitNotify.class);
+    Logger log = LoggerFactory.getLogger(WaitNotify.class);
 
     public static void main(String[] args) throws InterruptedException {
         ProducerConsumer producer = new ProducerConsumer();
@@ -37,7 +38,7 @@ public class WaitNotify {
 
 class ProducerConsumer {
 
-    Logger logger = Logger.getLogger(WaitNotify.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProducerConsumer.class);
 
     public void produce() throws InterruptedException {
         synchronized (this) {

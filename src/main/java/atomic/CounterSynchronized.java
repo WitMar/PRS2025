@@ -1,27 +1,40 @@
-package atomic;
+package semaphores;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import synchronization.Counter;
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class CounterSynchronized {
 
-    static Logger logger = Logger.getLogger(CounterSynchronized.class);
-    static Integer number = 0;
+    static Logger logger = LoggerFactory.getLogger(CounterSemaphores.class);
+    static AtomicInteger number = new AtomicInteger(0);
+    static Semaphore semaphore = new Semaphore(3);
 
     public static void main(String[] args) throws InterruptedException {
 
-        CounterThreadSynchronized counter = new CounterThreadSynchronized(number);
+        CounterThreadAtomicSemaphores counter = new CounterThreadAtomicSemaphores(number, semaphore);
 
         Thread t1 = new Thread(() -> {
             IntStream.rangeClosed(1, 10000).forEach(num -> {
-                counter.increment();
+                try {
+                    counter.increment();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         });
 
         Thread t2 = new Thread(() -> {
             IntStream.rangeClosed(1, 10000).forEach(num -> {
-                counter.decrement();
+                try {
+                    counter.decrement();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         });
 
@@ -36,24 +49,30 @@ public class CounterSynchronized {
     }
 }
 
-class CounterThreadSynchronized {
+class CounterThreadAtomicSemaphores {
 
-    Integer number;
+    AtomicInteger number;
+    Semaphore semaphore;
 
-    public CounterThreadSynchronized(Integer number) {
+    public CounterThreadAtomicSemaphores(AtomicInteger number, Semaphore semaphore) {
         this.number = number;
+        this.semaphore = semaphore;
     }
 
-    public void increment() {
-        number++;
+    public void increment() throws InterruptedException {
+        semaphore.acquire();
+        number.getAndIncrement();
+        semaphore.release();
     }
 
 
-    public void decrement() {
-        number--;
+    public void decrement() throws InterruptedException {
+        semaphore.acquire();
+        number.getAndDecrement();
+        semaphore.release();
     }
 
-    public Integer getNumber() {
+    public AtomicInteger getNumber() {
         return number;
     }
 }

@@ -1,12 +1,13 @@
 package synchronization;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.stream.IntStream;
 
 public class Counter {
 
-    static Logger logger = Logger.getLogger(Counter.class);
+    static Logger logger = LoggerFactory.getLogger(Counter.class);
     static Integer number = 0;
 
     public static void main(String[] args) throws InterruptedException {

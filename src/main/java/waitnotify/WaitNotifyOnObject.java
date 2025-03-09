@@ -1,10 +1,12 @@
 package waitnotify;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import yield.Yield;
 
 public class WaitNotifyOnObject {
 
-    Logger logger = Logger.getLogger(WaitNotify.class);
+    Logger log = LoggerFactory.getLogger(WaitNotifyOnObject.class);
     static Object lock = new Object();
 
     public static void main(String[] args) throws InterruptedException {
@@ -44,7 +46,7 @@ class ProducerConsumerObject {
         this.lock = lock;
     }
 
-    Logger logger = Logger.getLogger(WaitNotify.class);
+    Logger logger = LoggerFactory.getLogger(Yield.class);
 
     public void produce() throws InterruptedException {
         synchronized (lock) {
