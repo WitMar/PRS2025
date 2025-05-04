@@ -1,9 +1,0 @@
-variable: ${PATH}
-name: test-YAML
-environment: testing
-enabled: false
-servers: www.abc.test.com, www.xyz.test.com
-
-spring:
-  main:
-    web-application-type: none
