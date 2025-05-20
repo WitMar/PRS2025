@@ -5,15 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class KafkaProducer {
 
@@ -29,7 +28,6 @@ public class KafkaProducer {
             int port = 10294;
             String boostrap_servers = String.format("%s:%d", host, port);
             // you can create topic in control panel
-            String topic = "project";
             String sasl_username = "uam";
             String sasl_password = "uamuamuam";
             String truststorePassword = "oiGDQg1y";
@@ -84,13 +82,10 @@ public class KafkaProducer {
                 props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, truststorePassword);
                 props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, tempKeystore.getAbsolutePath());
                 props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, keystorePassword);
-
+                props.put(ProducerConfig.ACKS_CONFIG, "1");
                 props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
                 props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                         "org.apache.kafka.common.serialization.StringSerializer");
-                props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 30 * 1000);
-                props.put(ProducerConfig.RETRIES_CONFIG, 5);
-                props.put(ProducerConfig.RECONNECT_BACKOFF_MS_CONFIG, 3000);
 
                 org.apache.kafka.clients.producer.KafkaProducer<String, String> producer = new org.apache.kafka.clients.producer.KafkaProducer<String, String>(props);
 
@@ -119,16 +114,16 @@ public class KafkaProducer {
                         );
 
                         System.out.println("Sending data");
-                        ProducerRecord<String, String> record = new ProducerRecord<>(topic, Long.toString(sensorId), json);
-                        producer.send(record);
-                        System.out.println("Wysłano do Kafki: " + json);
+                        ProducerRecord<String, String> record = new ProducerRecord<>("pro", json);
+                        Future<RecordMetadata> out = producer.send(record);
+                        System.out.println("Wysłano do Kafki: " + out.get().toString());
                     }
                 }
 
                 producer.flush();
                 producer.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | InterruptedException | ExecutionException e) {
+                System.out.println(e.toString());
             }
 
         };
