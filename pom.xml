@@ -18,46 +18,36 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-java</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>3.6.1</version>
+            <version>2.7.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.6</version>
+        </dependency>
+
+        <!-- Główna biblioteka Kafka Streams -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+
+        <!-- SLF4J dla logowania (jeśli używasz logback/log4j/slf4j) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId> <!-- lub slf4j-log4j12 / logback-classic -->
+            <version>2.0.9</version>
+        </dependency>
+
+        <!-- (opcjonalnie) JSON/Serde biblioteki, jeśli przetwarzasz dane w JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.18.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-kafka</artifactId>
-            <version>3.4.0-1.20</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-base</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
+            <version>2.15.0</version>
         </dependency>
     </dependencies>
 
@@ -70,7 +60,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>flink.KafkaProducer</mainClass>
+                            <mainClass>kafkaStream.KafkaProducer</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
