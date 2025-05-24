@@ -1,4 +1,4 @@
-package kafkaStream;
+package producer;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -59,6 +59,7 @@ public class Producer {
             Properties props = new Properties();
 
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, boostrap_servers);
+            System.setProperty("org.apache.kafka.streams.processor.internals.StreamThread", "DEBUG");
 
             String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
             String jaasConfig = String.format(jaasTemplate, sasl_username, sasl_password);
@@ -91,10 +92,15 @@ public class Producer {
                 String sensorId = sensorIds[random.nextInt(sensorIds.length)];
                 double value = 10 + (random.nextDouble() * 20);
 
-                producer.send(new ProducerRecord<>("zaj2_2", sensorId, String.valueOf(value)));
-
+                producer.send(new ProducerRecord<>("zaj2_2", sensorId, String.valueOf(value)), (metadata, exception) -> {
+                    if (exception != null) {
+                        System.err.println("Failed to send message: " + exception.getMessage());
+                    } else {
+                        System.out.println("Message sent to topic " + metadata.topic() + " at offset " + metadata.offset());
+                    }
+                });
                 System.out.println(sensorId + " " + value);
-                //Thread.sleep(1000); // wysyłaj co 1 sekundę
+                Thread.sleep(1000); // wysyłaj co 1 sekundę
 
             }
 
